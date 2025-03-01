@@ -27,6 +27,7 @@ public class SecurityConfig {
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new AuthenticationFilter(SCHNOE_API_KEY), UsernamePasswordAuthenticationFilter.class);
+        http.cors(Customizer.withDefaults());
         return http.build();
     }
 
