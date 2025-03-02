@@ -1,5 +1,6 @@
 package io.gocklkatz.schnoeschnoebe.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ public class Question {
     @GeneratedValue
     private Long id;
 
+    //https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+    @JsonManagedReference
     @OneToMany( mappedBy = "question", fetch = FetchType.EAGER)
     private List<Answer> answers = new ArrayList<>();
 
@@ -43,5 +46,14 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answers.add(answer);
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", answerIds=" + answers.stream().map(Answer::getId).toList() +
+                ", question='" + question + '\'' +
+                '}';
     }
 }

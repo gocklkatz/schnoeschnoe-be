@@ -1,5 +1,6 @@
 package io.gocklkatz.schnoeschnoebe.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ public class Answer {
     @GeneratedValue
     private Long id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn
     private Question question;
@@ -47,5 +49,14 @@ public class Answer {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "id=" + id +
+                ", questionId=" + question.getId() +
+                ", answer='" + answer + '\'' +
+                '}';
     }
 }

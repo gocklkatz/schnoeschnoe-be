@@ -7,6 +7,7 @@ import io.gocklkatz.schnoeschnoebe.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersistenceServiceImpl implements PersistenceService {
@@ -37,5 +38,16 @@ public class PersistenceServiceImpl implements PersistenceService {
         answerEntity.setAnswer(answer);
         answerEntity.setQuestion(questionEntity);
         answerRepository.save(answerEntity);
+    }
+
+    @Override
+    public List<Question> getAllQuestions() {
+        return questionRepository.findAll();
+    }
+
+    @Override
+    public Question getOneQuestion(Long id) {
+        Optional<Question> questionOptional = questionRepository.findById(id);
+        return questionOptional.orElseGet(Question::new);
     }
 }
