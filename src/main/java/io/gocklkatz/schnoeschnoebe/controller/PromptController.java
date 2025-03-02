@@ -1,6 +1,7 @@
 package io.gocklkatz.schnoeschnoebe.controller;
 
 import io.gocklkatz.schnoeschnoebe.service.OpenAIService;
+import io.gocklkatz.schnoeschnoebe.service.PersistenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,9 +18,13 @@ public class PromptController {
     Logger logger = LoggerFactory.getLogger(PromptController.class);
 
     private final OpenAIService openAIService;
+    private final PersistenceService persistenceService;
 
-    public PromptController(OpenAIService openAIService) {
+    public PromptController(OpenAIService openAIService,
+                            PersistenceService persistenceService) {
         this.openAIService = openAIService;
+        this.persistenceService = persistenceService;
+
     }
 
     @GetMapping(path = "/time")
@@ -34,6 +39,10 @@ public class PromptController {
         logger.info("Question: {}", question);
         String answer = openAIService.getAnswer(question);
         logger.info("Answer: {}", answer);
+
+        persistenceService.saveQuestionAndAnswer(question, answer);
+
         return answer;
     }
+
 }
